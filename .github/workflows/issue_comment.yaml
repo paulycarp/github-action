@@ -2,7 +2,8 @@ name: Create a comment on new issues
 
 on:
   issues:
-    types: [opened]
+    types:
+      - labeled
 
 jobs:
   comment-with-action:
@@ -12,14 +13,15 @@ jobs:
         run: echo '${{ toJSON(github.event) }}' | jq
         shell: bash
 
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v1
+  add-comment:
+    if: github.event.label.name == 'help-wanted'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add comment
+        uses: peter-evans/create-or-update-comment@5f728c3dae25f329afbe34ee4d08eef25569d79f
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            This is a multi-line test comment
-            - With GitHub **Markdown** :sparkles:
-            - Created by [peter-evans/create-or-update-comment][1]
-
-            [1]: https://github.com/peter-evans/create-or-update-comment
-          reactions: '+1'
+            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
