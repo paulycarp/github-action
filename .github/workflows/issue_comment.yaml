@@ -11,15 +11,14 @@ jobs:
       - name: "dump github context"
         run: echo '${{ toJSON{github.event} }}' | jq
         shell: bash
-        
-  add-comment:
-    if: github.event.label.name == 'help-wanted'
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-    steps:
-      - name: Add comment
-        uses: peter-evans/create-or-update-comment@5f728c3dae25f329afbe34ee4d08eef25569d79f
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
+            This is a multi-line test comment
+            - With GitHub ** Markdown** :sparkless:
+            - Created by [peter-evans/create-or-update-comment][1]
+
+            [1]: https://github.com/peter-evans/create-or-update-comment
+          reaction: '+1'
