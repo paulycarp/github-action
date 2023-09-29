@@ -6,13 +6,6 @@ on:
       - labeled
 
 jobs:
-  comment-with-action:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "dump github context"
-        run: echo '${{ toJSON(github.event) }}' | jq
-        shell: bash
-
   add-comment:
     if: github.event.label.name == 'help-wanted'
     runs-on: ubuntu-latest
